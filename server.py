@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 """
 Metasploit MCP Server - FastMCP Version for Render Deployment
-Uses Streamable HTTP transport for production deployment.
+Uses HTTP transport (Streamable HTTP) for production deployment.
 """
 import asyncio
 import os
 import logging
 from typing import Any, Dict, List
 
-from mcp.server.fastmcp import FastMCP
+# Use fastmcp package (NOT mcp.server.fastmcp)
+from fastmcp import FastMCP
 
 # --- Configuration & Constants ---
 MSF_PASSWORD = os.getenv('MSF_PASSWORD', 'yourpassword')
@@ -60,8 +61,7 @@ def get_msf_client():
         return None
 
 # --- MCP Server Initialization ---
-# Use stateless_http=True and json_response=True for optimal scalability
-mcp = FastMCP("Metasploit MCP Server", stateless_http=True, json_response=True)
+mcp = FastMCP("Metasploit MCP Server")
 
 # --- MCP Tool Definitions ---
 
@@ -639,10 +639,10 @@ if __name__ == "__main__":
     logger.info(f"Starting Metasploit MCP Server on 0.0.0.0:{port}")
     logger.info(f"MSF Server configured: {MSF_SERVER}:{MSF_PORT_STR}")
     
-    # Run with Streamable HTTP transport (recommended for production)
+    # Run with HTTP transport (Streamable HTTP - recommended for production)
     # This creates a /mcp endpoint that accepts POST requests
     mcp.run(
-        transport="streamable-http",
+        transport="http",
         host="0.0.0.0",
         port=port
     )
